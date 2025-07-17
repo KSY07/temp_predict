@@ -1,0 +1,126 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.TelcordiaInductor = exports.TelcordiaCoilInductor = exports.TelcordiaTransformerInductor = void 0;
+const specifications_1 = require("../specifications");
+const sr332_1 = require("../sr332");
+exports.TelcordiaTransformerInductor = {
+    id: "SR332-INDUCTOR-TRANSFORMER",
+    name: "TRANSFORMER",
+    mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+    subCategories: [
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-TRANSFORMER-PULSE_LOW_LEVEL",
+            name: "Pulse Low Level (< 5V)",
+            g_fr: () => 3.0,
+            g_std: () => 0.90,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A, // πS = 1
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-TRANSFORMER-PULSE_HIGH_LEVEL",
+            name: "Pulse High Level (≥ 5V)",
+            g_fr: () => 9.8,
+            g_std: () => 6.9,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-TRANSFORMER-AUDIO",
+            name: "Audio",
+            g_fr: () => 2.1,
+            g_std: () => 0.78,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-TRANSFORMER-POWER",
+            name: "Power (> 1W)",
+            g_fr: () => 5.0,
+            g_std: () => 2.0,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-TRANSFORMER-RADIO_FREQUENCY",
+            name: "Radio Frequency",
+            g_fr: () => 4.6,
+            g_std: () => 1.74,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        }
+    ],
+    specificationList: specifications_1.TelcordiaBasicSpecifications
+};
+exports.TelcordiaCoilInductor = {
+    id: "SR332-INDUCTOR-COIL",
+    name: "COIL",
+    mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+    subCategories: [
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-COIL-LOAD_COIL",
+            name: "Load Coil",
+            g_fr: () => 0.90,
+            g_std: () => 0.30,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-COIL-POWER_FILTER",
+            name: "Power Filter",
+            g_fr: () => 0.24,
+            g_std: () => 0.07,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-COIL-RADIO_FREQUENCY_FIXED",
+            name: "Radio Frequency, Fixed",
+            g_fr: () => 0.11,
+            g_std: () => 0.02,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-COIL-RADIO_FREQUENCY_VARIABLE",
+            name: "Radio Frequency, Variable",
+            g_fr: () => 1.7,
+            g_std: () => 0.58,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-COIL-FERRITE_BEADS",
+            name: "Ferrite Beads",
+            g_fr: () => 0.1,
+            g_std: () => 0.07,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        },
+        {
+            mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+            id: "SR332-INDUCTOR-COIL-CHIP_CERAMIC_FILTER",
+            name: "Chip/Ceramic Filter",
+            g_fr: () => 0.1,
+            g_std: () => 0.07,
+            tempCurve: () => sr332_1.TelcordiaTempStressCurves._3,
+            elecCurve: () => sr332_1.TelcordiaElectricalStressCurves.A,
+        }
+    ],
+    specificationList: specifications_1.TelcordiaBasicSpecifications
+};
+exports.TelcordiaInductor = {
+    id: "SR332-INDUCTOR",
+    name: "Inductor",
+    mainCategory: sr332_1.TelcordiaMainCategories.INDUCTOR,
+    subCategories: [exports.TelcordiaTransformerInductor, exports.TelcordiaCoilInductor]
+};

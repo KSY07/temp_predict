@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep:*)",
+      "Bash(mv:*)",
+      "Bash(rg:*)",
+      "Bash(npx tsc:*)",
+      "Bash(find:*)",
+      "Bash(npm run test:telcordia:*)",
+      "Bash(node:*)",
+      "Bash(npx ts-node:*)"
+    ],
+    "deny": []
+  }
+}
