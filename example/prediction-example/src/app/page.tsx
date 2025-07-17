@@ -38,6 +38,57 @@ export default function Home() {
     exportToExcel(systems, selectedNodes, filename)
   }
 
+  const handleNewProject = () => {
+    if (confirm('새 프로젝트를 생성하시겠습니까? 현재 작업이 저장되지 않을 수 있습니다.')) {
+      setSystems([])
+      setSelectedNodes(new Set())
+    }
+  }
+
+  const handleOpenProject = () => {
+    const input = document.createElement('input')
+    input.type = 'file'
+    input.accept = '.json'
+    input.onchange = (e) => {
+      const file = (e.target as HTMLInputElement).files?.[0]
+      if (file) {
+        const reader = new FileReader()
+        reader.onload = (e) => {
+          try {
+            const data = JSON.parse(e.target?.result as string)
+            setSystems(data)
+            setSelectedNodes(new Set())
+          } catch (error) {
+            alert('파일을 읽는 중 오류가 발생했습니다.')
+          }
+        }
+        reader.readAsText(file)
+      }
+    }
+    input.click()
+  }
+
+  const handleSaveProject = () => {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, -5)
+    const filename = `project_${timestamp}.json`
+    
+    const dataStr = JSON.stringify(systems, null, 2)
+    const dataBlob = new Blob([dataStr], { type: 'application/json' })
+    
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(dataBlob)
+    link.download = filename
+    link.click()
+  }
+
+  const handleImportExcel = () => {
+    alert('Excel 가져오기 기능은 아직 구현되지 않았습니다.')
+  }
+
+  const handleSettings = () => {
+    alert('설정 기능은 아직 구현되지 않았습니다.')
+  }
+
   const handleCalculate = async (options: CalculationOptions) => {
     console.log("🚀 계산 시작:", options)
     setIsCalculating(true)
@@ -308,6 +359,11 @@ export default function Home() {
       onCalculate={handleCalculate} 
       isCalculating={isCalculating}
       onExportExcel={handleExportExcel}
+      onNewProject={handleNewProject}
+      onOpenProject={handleOpenProject}
+      onSaveProject={handleSaveProject}
+      onImportExcel={handleImportExcel}
+      onSettings={handleSettings}
       selectedCount={selectedNodes.size}
     >
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">

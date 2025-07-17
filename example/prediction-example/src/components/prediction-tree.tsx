@@ -339,6 +339,88 @@ export function PredictionTree({
     onSystemsChange?.(updatedSystems)
   }, [systems, onSystemsChange])
 
+  // Node deletion handlers
+  const handleDeleteSystem = useCallback((systemId: string) => {
+    const updatedSystems = systems.filter(system => system.id !== systemId)
+    onSystemsChange?.(updatedSystems)
+    
+    // Remove from selected nodes if it was selected
+    setSelectedNodes(prev => {
+      const newSet = new Set(prev)
+      const collectNodeIds = (node: SystemTreeNode | UnitTreeNode | DeviceTreeNode) => {
+        newSet.delete(node.id)
+        if ('children' in node && node.children.length > 0) {
+          node.children.forEach(child => collectNodeIds(child as any))
+        }
+      }
+      
+      const systemToDelete = systems.find(s => s.id === systemId)
+      if (systemToDelete) {
+        collectNodeIds(systemToDelete)
+      }
+      
+      return newSet
+    })
+  }, [systems, onSystemsChange])
+
+  const handleDeleteUnit = useCallback((unitId: string) => {
+    const updatedSystems = systems.map(system => {
+      const updatedUnits = system.children.filter(unit => unit.id !== unitId)
+      return {
+        ...system,
+        children: updatedUnits
+      }
+    })
+
+    onSystemsChange?.(updatedSystems)
+    
+    // Remove from selected nodes if it was selected
+    setSelectedNodes(prev => {
+      const newSet = new Set(prev)
+      const collectNodeIds = (node: UnitTreeNode | DeviceTreeNode) => {
+        newSet.delete(node.id)
+        if ('children' in node && node.children.length > 0) {
+          node.children.forEach(child => collectNodeIds(child as any))
+        }
+      }
+      
+      systems.forEach(system => {
+        const unitToDelete = system.children.find(u => u.id === unitId)
+        if (unitToDelete) {
+          collectNodeIds(unitToDelete)
+        }
+      })
+      
+      return newSet
+    })
+  }, [systems, onSystemsChange])
+
+  const handleDeleteDevice = useCallback((deviceId: string) => {
+    const updatedSystems = systems.map(system => {
+      const updatedUnits = system.children.map(unit => {
+        const updatedDevices = unit.children.filter(device => device.id !== deviceId)
+        return {
+          ...unit,
+          children: updatedDevices
+        }
+      })
+
+      return {
+        ...system,
+        children: updatedUnits
+      }
+    })
+
+    onSystemsChange?.(updatedSystems)
+    
+    // Remove from selected nodes if it was selected
+    setSelectedNodes(prev => {
+      const newSet = new Set(prev)
+      newSet.delete(deviceId)
+      return newSet
+    })
+  }, [systems, onSystemsChange])
+
   // Update node states based on current selections and expansions
   const enhancedSystems = useMemo(() => {
     const updateNodeState = (node: any): any => {
@@ -440,6 +522,9 @@ export function PredictionTree({
                   onOpenEditSystemModal={handleOpenEditSystemModal}
                   onOpenEditUnitModal={handleOpenEditUnitModal}
                   onOpenEditDeviceModal={handleOpenEditDeviceModal}
+                  onDeleteSystem={handleDeleteSystem}
+                  onDeleteUnit={handleDeleteUnit}
+                  onDeleteDevice={handleDeleteDevice}
                 />
               </div>
             ))}

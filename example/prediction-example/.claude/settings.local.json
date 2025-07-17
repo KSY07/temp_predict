@@ -10,7 +10,8 @@
       "Bash(timeout 10 npm run dev)",
       "Bash(npm install:*)",
       "Bash(ls:*)",
-      "Bash(PORT=9999 npm run dev)"
+      "Bash(PORT=9999 npm run dev)",
+      "Bash(pkill:*)"
     ],
     "deny": []
   }

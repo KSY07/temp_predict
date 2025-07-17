@@ -10,12 +10,14 @@ import {
   MenubarShortcut,
   MenubarTrigger,
 } from "@/components/ui/menubar"
-import { FileDown, FileSpreadsheet, Save, FolderOpen, Settings } from "lucide-react"
+import { FileDown, FileSpreadsheet, Save, FolderOpen, Settings, Plus, FileUp } from "lucide-react"
 
 interface MenuBarProps {
   onExportExcel?: () => void
   onSaveProject?: () => void
   onOpenProject?: () => void
+  onNewProject?: () => void
+  onImportExcel?: () => void
   onSettings?: () => void
   selectedCount?: number
 }
@@ -24,6 +26,8 @@ export function MenuBar({
   onExportExcel, 
   onSaveProject, 
   onOpenProject,
+  onNewProject,
+  onImportExcel,
   onSettings,
   selectedCount = 0 
 }: MenuBarProps) {
@@ -33,6 +37,11 @@ export function MenuBar({
         <MenubarMenu>
           <MenubarTrigger>파일</MenubarTrigger>
           <MenubarContent>
+            <MenubarItem onClick={onNewProject}>
+              <Plus className="mr-2 h-4 w-4" />
+              새 프로젝트
+              <MenubarShortcut>⌘N</MenubarShortcut>
+            </MenubarItem>
             <MenubarItem onClick={onOpenProject}>
               <FolderOpen className="mr-2 h-4 w-4" />
               프로젝트 열기
@@ -44,6 +53,10 @@ export function MenuBar({
               <MenubarShortcut>⌘S</MenubarShortcut>
             </MenubarItem>
             <MenubarSeparator />
+            <MenubarItem onClick={onImportExcel}>
+              <FileUp className="mr-2 h-4 w-4" />
+              Excel에서 가져오기
+            </MenubarItem>
             <MenubarItem 
               onClick={onExportExcel}
               disabled={selectedCount === 0}

@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { cn } from "@/lib/utils"
 import { TreeNode, TreeNodeType, SystemTreeNode, UnitTreeNode, DeviceTreeNode } from "@/types/prediction-tree"
-import { ChevronDown, ChevronRight, Folder, FolderOpen, Settings, Cpu, Monitor, Plus, Edit, MoreHorizontal, Info, FileText } from "lucide-react"
+import { ChevronDown, ChevronRight, Folder, FolderOpen, Settings, Cpu, Monitor, Plus, Edit, MoreHorizontal, Info, FileText, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
@@ -32,6 +32,9 @@ interface TreeNodeProps {
   onOpenEditSystemModal?: (system: SystemTreeNode) => void
   onOpenEditUnitModal?: (unit: UnitTreeNode) => void
   onOpenEditDeviceModal?: (device: DeviceTreeNode) => void
+  onDeleteSystem?: (systemId: string) => void
+  onDeleteUnit?: (unitId: string) => void
+  onDeleteDevice?: (deviceId: string) => void
   className?: string
 }
 
@@ -67,6 +70,9 @@ export function PredictionTreeNode({
   onOpenEditSystemModal,
   onOpenEditUnitModal,
   onOpenEditDeviceModal,
+  onDeleteSystem,
+  onDeleteUnit,
+  onDeleteDevice,
   className 
 }: TreeNodeProps) {
   const [showNoteModal, setShowNoteModal] = useState(false)
@@ -119,6 +125,30 @@ export function PredictionTreeNode({
     setShowNoteModal(true)
   }
 
+  const handleDeleteSystem = () => {
+    if (node.type === 'system' && onDeleteSystem) {
+      if (confirm(`시스템 "${node.alias}"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`)) {
+        onDeleteSystem(node.id)
+      }
+    }
+  }
+
+  const handleDeleteUnit = () => {
+    if (node.type === 'unit' && onDeleteUnit) {
+      if (confirm(`유닛 "${node.alias}"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`)) {
+        onDeleteUnit(node.id)
+      }
+    }
+  }
+
+  const handleDeleteDevice = () => {
+    if (node.type === 'device' && onDeleteDevice) {
+      if (confirm(`장치 "${node.alias}"을(를) 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`)) {
+        onDeleteDevice(node.id)
+      }
+    }
+  }
+
   const renderContextMenu = () => {
     if (node.type === 'system') {
       return (
@@ -131,6 +161,11 @@ export function PredictionTreeNode({
           <ContextMenuItem onClick={handleAddUnit}>
             <Plus className="mr-2 h-4 w-4" />
             유닛 추가
+          </ContextMenuItem>
+          <ContextMenuSeparator />
+          <ContextMenuItem onClick={handleDeleteSystem} className="text-red-600">
+            <Trash2 className="mr-2 h-4 w-4" />
+            시스템 삭제
           </ContextMenuItem>
           {node.reliability?.note && (
             <>
@@ -157,6 +192,11 @@ export function PredictionTreeNode({
             <Plus className="mr-2 h-4 w-4" />
             장치 추가
           </ContextMenuItem>
+          <ContextMenuSeparator />
+          <ContextMenuItem onClick={handleDeleteUnit} className="text-red-600">
+            <Trash2 className="mr-2 h-4 w-4" />
+            유닛 삭제
+          </ContextMenuItem>
           {node.reliability?.note && (
             <>
               <ContextMenuSeparator />
@@ -176,6 +216,11 @@ export function PredictionTreeNode({
           <ContextMenuItem onClick={handleEditDevice}>
             <Edit className="mr-2 h-4 w-4" />
             장치 편집
+          </ContextMenuItem>
+          <ContextMenuSeparator />
+          <ContextMenuItem onClick={handleDeleteDevice} className="text-red-600">
+            <Trash2 className="mr-2 h-4 w-4" />
+            장치 삭제
           </ContextMenuItem>
           {node.reliability?.note && (
             <>
@@ -280,6 +325,9 @@ export function PredictionTreeNode({
                 onOpenEditSystemModal={onOpenEditSystemModal}
                 onOpenEditUnitModal={onOpenEditUnitModal}
                 onOpenEditDeviceModal={onOpenEditDeviceModal}
+                onDeleteSystem={onDeleteSystem}
+                onDeleteUnit={onDeleteUnit}
+                onDeleteDevice={onDeleteDevice}
               />
             ))}
           </CollapsibleContent>
